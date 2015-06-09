@@ -2,10 +2,11 @@
 
 namespace Derp\Command;
 
+use SimpleBus\Message\Message;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-class RegisterWalkin
+class RegisterWalkin implements Message
 {
     /**
      * @var string

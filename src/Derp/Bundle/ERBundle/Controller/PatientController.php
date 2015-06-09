@@ -71,7 +71,7 @@ class PatientController extends Controller
             /* @var $command RegisterWalkin */
             $command = $form->getData();
 
-            $this->get('register_walkin_handler')->handle($command);
+            $this->get('command_bus')->handle($command);
 
             return $this->redirect($this->generateUrl('patient_list'));
         }

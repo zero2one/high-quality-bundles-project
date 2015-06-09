@@ -4,3 +4,5 @@ services:
         arguments:
             - "@doctrine"
             - "@mailer"
+        tags:
+            - { name: command_handler, handles: Derp\Command\RegisterWalkin }

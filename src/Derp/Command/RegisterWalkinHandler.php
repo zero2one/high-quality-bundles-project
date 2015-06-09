@@ -7,10 +7,12 @@ use Derp\Bundle\ERBundle\Entity\FullName;
 use Derp\Bundle\ERBundle\Entity\Patient;
 use Derp\Bundle\ERBundle\Entity\PersonalInformation;
 use Derp\Bundle\ERBundle\Entity\Sex;
+use SimpleBus\Message\Handler\MessageHandler;
+use SimpleBus\Message\Message;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 
-class RegisterWalkinHandler
+class RegisterWalkinHandler implements MessageHandler
 {
     private $doctrine;
     private $mailer;
@@ -30,10 +32,12 @@ class RegisterWalkinHandler
     /**
      * Handle the command.
      *
-     * @param RegisterWalkin $command
+     * @param Message $command
      */
-    public function handle(RegisterWalkin $command)
+    public function handle(Message $command)
     {
+        /* @var $command RegisterWalkin */
+
         $patient = Patient::walkIn(
             PersonalInformation::fromDetails(
                 FullName::fromParts($command->firstName, $command->lastName),
