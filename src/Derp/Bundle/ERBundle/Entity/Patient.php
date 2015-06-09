@@ -2,13 +2,18 @@
 
 namespace Derp\Bundle\ERBundle\Entity;
 
+use Derp\Event\WalkinRegistered;
 use Doctrine\ORM\Mapping as ORM;
+use SimpleBus\Message\Recorder\ContainsRecordedMessages;
+use SimpleBus\Message\Recorder\PrivateMessageRecorderCapabilities;
 
 /**
  * @ORM\Entity(repositoryClass="Derp\Bundle\ERBundle\Entity\PatientRepository")
  */
-class Patient
+class Patient implements ContainsRecordedMessages
 {
+    use PrivateMessageRecorderCapabilities;
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="integer")
@@ -42,7 +47,13 @@ class Patient
 
     public static function walkIn(PersonalInformation $personalInformation, $indication)
     {
-        return new Patient($personalInformation, $indication, true);
+        $patient = new Patient($personalInformation, $indication, true);
+
+        // The event "has occurred".
+        $event = new WalkinRegistered($patient->getIndication());
+        $patient->record($event);
+
+        return $patient;
     }
 
     public static function announce(PersonalInformation $personalInformation, $indication)

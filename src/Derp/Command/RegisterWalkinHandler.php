@@ -7,7 +7,6 @@ use Derp\Bundle\ERBundle\Entity\FullName;
 use Derp\Bundle\ERBundle\Entity\Patient;
 use Derp\Bundle\ERBundle\Entity\PersonalInformation;
 use Derp\Bundle\ERBundle\Entity\Sex;
-use Derp\Event\WalkinRegistered;
 use SimpleBus\Message\Handler\MessageHandler;
 use SimpleBus\Message\Message;
 use SimpleBus\Message\Recorder\RecordsMessages;
@@ -53,9 +52,5 @@ class RegisterWalkinHandler implements MessageHandler
 
         $em = $this->doctrine->getManager();
         $em->persist($patient);
-
-        // The event "has occurred".
-        $event = new WalkinRegistered($patient->getIndication());
-        $this->eventRecorder->record($event);
     }
 }
