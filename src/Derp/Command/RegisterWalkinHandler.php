@@ -7,27 +7,24 @@ use Derp\Bundle\ERBundle\Entity\FullName;
 use Derp\Bundle\ERBundle\Entity\Patient;
 use Derp\Bundle\ERBundle\Entity\PersonalInformation;
 use Derp\Bundle\ERBundle\Entity\Sex;
+use Derp\Domain\PatientRepository;
 use SimpleBus\Message\Handler\MessageHandler;
 use SimpleBus\Message\Message;
-use SimpleBus\Message\Recorder\RecordsMessages;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 
 class RegisterWalkinHandler implements MessageHandler
 {
-    private $doctrine;
-    private $eventRecorder;
+    private $patientRepository;
 
     /**
      * Constructor
      */
     public function __construct(
-        ManagerRegistry $doctrine,
-        RecordsMessages $eventRecorder
+        PatientRepository $patientRepository
     )
     {
-        $this->doctrine = $doctrine;
-        $this->eventRecorder = $eventRecorder;
+        $this->patientRepository = $patientRepository;
     }
 
     /**
@@ -50,7 +47,6 @@ class RegisterWalkinHandler implements MessageHandler
             $command->indication
         );
 
-        $em = $this->doctrine->getManager();
-        $em->persist($patient);
+        $this->patientRepository->add($patient);
     }
 }

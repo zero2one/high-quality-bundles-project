@@ -2,14 +2,18 @@ services:
     register_walkin_handler:
         class: Derp\Command\RegisterWalkinHandler
         arguments:
-            - "@doctrine"
-            - "@event_recorder"
+            - "@patient_repository"
         tags:
             - { name: command_handler, handles: Derp\Command\RegisterWalkin }
 
     when_walkin_registered_notify_triage_nurse:
-            class: Derp\Event\WhenWalkinRegisteredNotifyTriageNurse
-            arguments:
-                - "@mailer"
-            tags:
-                - { name: event_subscriber, subscribes_to: Derp\Event\WalkinRegistered }
+        class: Derp\Event\WhenWalkinRegisteredNotifyTriageNurse
+        arguments:
+            - "@mailer"
+        tags:
+            - { name: event_subscriber, subscribes_to: Derp\Event\WalkinRegistered }
+
+    patient_repository:
+        class: Derp\Infrastructure\DoctrineORMPatientRepository
+        arguments:
+            - "@doctrine"
