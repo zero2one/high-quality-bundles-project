@@ -3,6 +3,7 @@
 namespace Derp\Domain;
 
 use Derp\Bundle\ERBundle\Entity\Patient;
+use Derp\Bundle\ERBundle\Entity\PatientId;
 
 interface PatientRepository
 {
@@ -37,4 +38,9 @@ interface PatientRepository
      * @throws PatientNotFound
      */
     public function byId($id);
+
+    /**
+     * @return PatientId
+     */
+    public function nextIdentity();
 }

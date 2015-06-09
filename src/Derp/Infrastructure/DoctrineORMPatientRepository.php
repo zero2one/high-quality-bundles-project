@@ -3,58 +3,60 @@
 namespace Derp\Infrastructure;
 
 use Derp\Bundle\ERBundle\Entity\Patient;
+use Derp\Bundle\ERBundle\Entity\PatientId;
 use Derp\Domain\PatientNotFound;
 use Derp\Domain\PatientRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Rhumsaa\Uuid\Uuid;
 
 class DoctrineORMPatientRepository implements PatientRepository
 {
     /**
-     * @var ManagerRegistry
+     * @var managerregistry
      */
     private $doctrine;
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(managerregistry $doctrine)
     {
         $this->doctrine = $doctrine;
     }
 
-    public function add(Patient $patient)
+    public function add(patient $patient)
     {
-        $em = $this->doctrine->getManager();
+        $em = $this->doctrine->getmanager();
         $em->persist($patient);
     }
 
 
     /**
-     * Get all patients.
+     * get all patients.
      *
-     * @return Patient[]
+     * @return patient[]
      */
     public function all()
     {
         $patients = $this
             ->doctrine
-            ->getManager()
-            ->getRepository(Patient::class)
-            ->findAll();
+            ->getmanager()
+            ->getrepository(patient::class)
+            ->findall();
 
         return $patients;
     }
 
     /**
-     * @param $lastName
+     * @param $lastname
      *
-     * @return Patient[]
+     * @return patient[]
      */
-    public function findByLastName($lastName)
+    public function findbylastname($lastname)
     {
         $patients = $this
             ->doctrine
-            ->getManager()
-            ->getRepository(Patient::class)
-            ->findBy(
-                ['personalInformation.name.lastName' => $lastName]
+            ->getmanager()
+            ->getrepository(patient::class)
+            ->findby(
+                ['personalinformation.name.lastname' => $lastname]
             );
 
         return $patients;
@@ -63,24 +65,31 @@ class DoctrineORMPatientRepository implements PatientRepository
     /**
      * @param $id
      *
-     * @return Patient
+     * @return patient
      *
-     * @throws PatientNotFound
+     * @throws patientnotfound
      */
-    public function byId($id)
+    public function byid($id)
     {
         $patient = $this
             ->doctrine
-            ->getManager()
-            ->getRepository(Patient::class)
+            ->getmanager()
+            ->getrepository(patient::class)
             ->find($id);
 
         if (!$patient) {
-            throw new PatientNotFound();
+            throw new patientnotfound();
         }
 
         return $patient;
     }
 
+    /**
+     * @return PatientId
+     */
+    public function nextIdentity()
+    {
+        return PatientId::fromString(Uuid::uuid4()->toString());
+    }
 
 }

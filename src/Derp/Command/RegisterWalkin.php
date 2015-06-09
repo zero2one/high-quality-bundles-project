@@ -4,10 +4,16 @@ namespace Derp\Command;
 
 use SimpleBus\Message\Message;
 use Symfony\Component\Validator\Constraints as Assert;
+use Derp\Bundle\ERBundle\Entity\PatientId;
 
 
 class RegisterWalkin implements Message
 {
+    /**
+     * @var string
+     */
+    public $patientId;
+
     /**
      * @var string
      * @Assert\NotBlank()

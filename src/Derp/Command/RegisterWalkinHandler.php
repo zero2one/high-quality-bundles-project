@@ -37,6 +37,7 @@ class RegisterWalkinHandler implements MessageHandler
         /* @var $command RegisterWalkin */
 
         $patient = Patient::walkIn(
+            $command->patientId,
             PersonalInformation::fromDetails(
                 FullName::fromParts($command->firstName, $command->lastName),
                 BirthDate::fromYearMonthDayFormat(

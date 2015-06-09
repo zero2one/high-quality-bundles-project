@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
+
 /**
  * @Route("/patients")
  */
@@ -62,11 +63,18 @@ class PatientController extends Controller
 
         if ($form->isValid()) {
             /* @var $command RegisterWalkin */
+            $patientId = $this->get('patient_repository')->nextIdentity();
             $command = $form->getData();
+            $command->patientId = $patientId;
 
             $this->get('command_bus')->handle($command);
 
-            return $this->redirect($this->generateUrl('patient_list'));
+            return $this->redirect(
+                $this->generateUrl(
+                    'patient_details',
+                    ['id' => $command->patientId]
+                )
+            );
         }
 
         return array(

@@ -16,8 +16,7 @@ class Patient implements ContainsRecordedMessages
 
     /**
      * @ORM\Id()
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue()
+     * @ORM\Column(type="string")
      */
     private $id;
 
@@ -36,18 +35,19 @@ class Patient implements ContainsRecordedMessages
      */
     private $personalInformation;
 
-    private function __construct(PersonalInformation $personalInformation, $indication, $arrived)
+    private function __construct($id, PersonalInformation $personalInformation, $indication, $arrived)
     {
         \Assert\that($indication)->string()->notEmpty('Indication is required');
 
+        $this->id = $id;
         $this->indication = $indication;
         $this->arrived = $arrived;
         $this->personalInformation = $personalInformation;
     }
 
-    public static function walkIn(PersonalInformation $personalInformation, $indication)
+    public static function walkIn($id, PersonalInformation $personalInformation, $indication)
     {
-        $patient = new Patient($personalInformation, $indication, true);
+        $patient = new Patient($id, $personalInformation, $indication, true);
 
         // The event "has occurred".
         $event = new WalkinRegistered($patient->getIndication());
@@ -56,9 +56,9 @@ class Patient implements ContainsRecordedMessages
         return $patient;
     }
 
-    public static function announce(PersonalInformation $personalInformation, $indication)
+    public static function announce($id, PersonalInformation $personalInformation, $indication)
     {
-        return new Patient($personalInformation, $indication, false);
+        return new Patient($id, $personalInformation, $indication, false);
     }
 
     public function registerArrival()
