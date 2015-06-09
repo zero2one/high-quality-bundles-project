@@ -51,7 +51,6 @@ class RegisterWalkinHandler implements MessageHandler
 
         $em = $this->doctrine->getManager();
         $em->persist($patient);
-        $em->flush();
 
         if (!$patient->hasArrived()) {
             $message = \Swift_Message::newInstance(
