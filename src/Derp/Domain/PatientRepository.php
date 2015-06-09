@@ -21,4 +21,20 @@ interface PatientRepository
      * @return Patient[]
      */
     public function all();
+
+    /**
+     * @param $lastName
+     *
+     * @return Patient[]
+     */
+    public function findByLastName($lastName);
+
+    /**
+     * @param $id
+     *
+     * @return Patient
+     *
+     * @throws PatientNotFound
+     */
+    public function byId($id);
 }

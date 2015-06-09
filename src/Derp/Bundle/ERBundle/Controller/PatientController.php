@@ -9,6 +9,7 @@ use Derp\Bundle\ERBundle\Entity\Sex;
 use Derp\Bundle\ERBundle\Form\RegisterWalkinType;
 use Derp\Bundle\ERBundle\Entity\Patient;
 use Derp\Command\RegisterWalkin;
+use Derp\Domain\PatientNotFound;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -39,13 +40,9 @@ class PatientController extends Controller
      */
     public function findByLastName(Request $request)
     {
-        $patients = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository(Patient::class)
-            ->findBy(
-                ['personalInformation.name.lastName' => $request->query->get('lastName')]
-            );
+        $patients = $this->get('patient_repository')->findByLastName(
+            $request->query->get('lastName')
+        );
 
         return array(
             'patients' => $patients
@@ -84,13 +81,10 @@ class PatientController extends Controller
      */
     public function detailsAction($id)
     {
-        $patient = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository(Patient::class)
-            ->find($id);
-
-        if ($patient === null) {
+        try {
+            $patient = $this->get('patient_repository')->byId($id);
+        }
+        catch (PatientNotFound $e) {
             throw $this->createNotFoundException();
         }
 

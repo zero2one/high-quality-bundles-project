@@ -3,6 +3,7 @@
 namespace Derp\Infrastructure;
 
 use Derp\Bundle\ERBundle\Entity\Patient;
+use Derp\Domain\PatientNotFound;
 use Derp\Domain\PatientRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -40,4 +41,46 @@ class DoctrineORMPatientRepository implements PatientRepository
 
         return $patients;
     }
+
+    /**
+     * @param $lastName
+     *
+     * @return Patient[]
+     */
+    public function findByLastName($lastName)
+    {
+        $patients = $this
+            ->doctrine
+            ->getManager()
+            ->getRepository(Patient::class)
+            ->findBy(
+                ['personalInformation.name.lastName' => $lastName]
+            );
+
+        return $patients;
+    }
+
+    /**
+     * @param $id
+     *
+     * @return Patient
+     *
+     * @throws PatientNotFound
+     */
+    public function byId($id)
+    {
+        $patient = $this
+            ->doctrine
+            ->getManager()
+            ->getRepository(Patient::class)
+            ->find($id);
+
+        if (!$patient) {
+            throw new PatientNotFound();
+        }
+
+        return $patient;
+    }
+
+
 }
