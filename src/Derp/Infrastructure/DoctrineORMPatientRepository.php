@@ -63,13 +63,13 @@ class DoctrineORMPatientRepository implements PatientRepository
     }
 
     /**
-     * @param $id
+     * @param PatientId $id
      *
      * @return Patient
      *
      * @throws PatientNotFound
      */
-    public function byId($id)
+    public function byId(PatientId $id)
     {
         $patient = $this
             ->doctrine

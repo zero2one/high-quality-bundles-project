@@ -31,13 +31,13 @@ interface PatientRepository
     public function findByLastName($lastName);
 
     /**
-     * @param $id
+     * @param PatientId $id
      *
      * @return Patient
      *
      * @throws PatientNotFound
      */
-    public function byId($id);
+    public function byId(PatientId $id);
 
     /**
      * @return PatientId

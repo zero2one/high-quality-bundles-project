@@ -10,6 +10,7 @@ services:
         class: Derp\Event\WhenWalkinRegisteredNotifyTriageNurse
         arguments:
             - "@mailer"
+            - "@patient_repository"
         tags:
             - { name: event_subscriber, subscribes_to: Derp\Event\WalkinRegistered }
 

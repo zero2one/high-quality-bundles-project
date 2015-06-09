@@ -4,6 +4,7 @@ namespace Derp\Bundle\ERBundle\Controller;
 
 use Derp\Bundle\ERBundle\Entity\BirthDate;
 use Derp\Bundle\ERBundle\Entity\FullName;
+use Derp\Bundle\ERBundle\Entity\PatientId;
 use Derp\Bundle\ERBundle\Entity\PersonalInformation;
 use Derp\Bundle\ERBundle\Entity\Sex;
 use Derp\Bundle\ERBundle\Form\RegisterWalkinType;
@@ -90,7 +91,8 @@ class PatientController extends Controller
     public function detailsAction($id)
     {
         try {
-            $patient = $this->get('patient_repository')->byId($id);
+            $patientId = PatientId::fromString($id);
+            $patient = $this->get('patient_repository')->byId($patientId);
         }
         catch (PatientNotFound $e) {
             throw $this->createNotFoundException();

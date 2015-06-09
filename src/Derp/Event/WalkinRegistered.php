@@ -2,27 +2,28 @@
 
 namespace Derp\Event;
 
+use Derp\Bundle\ERBundle\Entity\PatientId;
 use SimpleBus\Message\Message;
 
 class WalkinRegistered implements Message
 {
-    private $indication;
+    private $patientId;
 
     /**
      * Constructor
      *
-     * @param string $indication
+     * @param PatientId $patientId
      */
-    public function __construct($indication)
+    public function __construct(PatientId $patientId)
     {
-        $this->indication = $indication;
+        $this->patientId = $patientId;
     }
 
     /**
      * @return mixed
      */
-    public function indication()
+    public function patientId()
     {
-        return $this->indication;
+        return $this->patientId;
     }
 }

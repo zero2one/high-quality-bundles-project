@@ -50,7 +50,7 @@ class Patient implements ContainsRecordedMessages
         $patient = new Patient($id, $personalInformation, $indication, true);
 
         // The event "has occurred".
-        $event = new WalkinRegistered($patient->getIndication());
+        $event = new WalkinRegistered($patient->getId());
         $patient->record($event);
 
         return $patient;
