@@ -2,8 +2,13 @@
 
 namespace Derp\Bundle\ERBundle\Controller;
 
-use Derp\Bundle\ERBundle\Form\CreatePatientType;
+use Derp\Bundle\ERBundle\Entity\BirthDate;
+use Derp\Bundle\ERBundle\Entity\FullName;
+use Derp\Bundle\ERBundle\Entity\PersonalInformation;
+use Derp\Bundle\ERBundle\Entity\Sex;
+use Derp\Bundle\ERBundle\Form\RegisterWalkinType;
 use Derp\Bundle\ERBundle\Entity\Patient;
+use Derp\Command\RegisterWalkin;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -58,13 +63,25 @@ class PatientController extends Controller
      */
     public function createAction(Request $request)
     {
-        $patient = new Patient();
-
-        $form = $this->createForm(new CreatePatientType(), $patient);
+        $form = $this->createForm(new RegisterWalkinType());
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            /* @var $command RegisterWalkin */
+            $command = $form->getData();
+
+            $patient = Patient::walkIn(
+                PersonalInformation::fromDetails(
+                    FullName::fromParts($command->firstName, $command->lastName),
+                    BirthDate::fromYearMonthDayFormat(
+                        $command->birthDate->format('Y-m-d')
+                    ),
+                    new Sex($command->sex)
+                ),
+                $command->indication
+            );
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($patient);
             $em->flush();
