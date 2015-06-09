@@ -1,8 +1,16 @@
 {% extends "::base.html.twig" %}
 
 {% block body %}
-    <h1>{{ patient.personalInformation.name.firstName ~ ' ' ~ patient.personalInformation.name.lastName }}</h1>
+    <h1>{{ patient.personalInformation.name }}</h1>
     <table class="table">
+        <tr>
+            <th>Firstname</th>
+            <td>{{ patient.personalInformation.name.firstName }}</td>
+        </tr>
+        <tr>
+            <th>Lastname</th>
+            <td>{{ patient.personalInformation.name.lastName }}</td>
+        </tr>
         <tr>
             <th>Sex</th>
             <td>{{ patient.personalInformation.sex.sex }}</td>

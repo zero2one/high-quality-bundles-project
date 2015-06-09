@@ -47,4 +47,11 @@ class FullName
     {
         return $this->lastName;
     }
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getFirstName() . ' ' . $this->getLastName();
+    }
 }
