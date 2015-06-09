@@ -3,7 +3,6 @@
 namespace Derp\Bundle\ERBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Embeddable()
@@ -18,7 +17,6 @@ class Sex
 
     /**
      * @ORM\Column(name="sex", type="string", length=10)
-     * @Assert\Choice(choices={"male", "female", "intersex"})
      */
     private $value;
 

@@ -5,7 +5,6 @@ namespace Derp\Bundle\ERBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use DateTime;
 use DateInterval;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Embeddable()

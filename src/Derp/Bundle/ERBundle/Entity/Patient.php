@@ -3,7 +3,6 @@
 namespace Derp\Bundle\ERBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Derp\Bundle\ERBundle\Entity\PatientRepository")
@@ -19,7 +18,6 @@ class Patient
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank()
      */
     private $indication;
 
@@ -30,7 +28,6 @@ class Patient
 
     /**
      * @ORM\Embedded(class="PersonalInformation", columnPrefix=false)
-     * @Assert\Valid()
      */
     private $personalInformation;
 

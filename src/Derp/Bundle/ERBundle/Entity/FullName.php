@@ -3,7 +3,6 @@
 namespace Derp\Bundle\ERBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Embeddable()
@@ -12,13 +11,11 @@ class FullName
 {
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank()
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank()
      */
     private $lastName;
 
