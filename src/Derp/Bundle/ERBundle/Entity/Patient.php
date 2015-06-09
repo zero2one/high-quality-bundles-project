@@ -33,6 +33,8 @@ class Patient
 
     private function __construct(PersonalInformation $personalInformation, $indication, $arrived)
     {
+        \Assert\that($indication)->string()->notEmpty('Indication is required');
+
         $this->indication = $indication;
         $this->arrived = $arrived;
         $this->personalInformation = $personalInformation;
