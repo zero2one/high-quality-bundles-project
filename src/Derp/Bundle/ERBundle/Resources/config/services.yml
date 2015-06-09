@@ -3,6 +3,13 @@ services:
         class: Derp\Command\RegisterWalkinHandler
         arguments:
             - "@doctrine"
-            - "@mailer"
+            - "@event_recorder"
         tags:
             - { name: command_handler, handles: Derp\Command\RegisterWalkin }
+
+    when_walkin_registered_notify_triage_nurse:
+            class: Derp\Event\WhenWalkinRegisteredNotifyTriageNurse
+            arguments:
+                - "@mailer"
+            tags:
+                - { name: event_subscriber, subscribes_to: Derp\Event\WalkinRegistered }

@@ -3,6 +3,7 @@
 namespace Derp\Bundle\ERBundle\Command;
 
 use Derp\Command\RegisterWalkin;
+use Matthias\SymfonyConsoleForm\Console\Helper\FormHelper;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,5 +41,10 @@ class RegisterWalkinConsoleCommand extends ContainerAwareCommand
         }
 
         $this->getContainer()->get('command_bus')->handle($command);
+
+        // Symfony console form package.
+        $formHelper = $this->getHelper('form');
+        /* @var $formHelper FormHelper  */
+
     }
 }

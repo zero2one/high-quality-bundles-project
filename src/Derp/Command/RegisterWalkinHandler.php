@@ -7,26 +7,28 @@ use Derp\Bundle\ERBundle\Entity\FullName;
 use Derp\Bundle\ERBundle\Entity\Patient;
 use Derp\Bundle\ERBundle\Entity\PersonalInformation;
 use Derp\Bundle\ERBundle\Entity\Sex;
+use Derp\Event\WalkinRegistered;
 use SimpleBus\Message\Handler\MessageHandler;
 use SimpleBus\Message\Message;
+use SimpleBus\Message\Recorder\RecordsMessages;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 
 class RegisterWalkinHandler implements MessageHandler
 {
     private $doctrine;
-    private $mailer;
+    private $eventRecorder;
 
     /**
      * Constructor
      */
     public function __construct(
         ManagerRegistry $doctrine,
-        \Swift_Mailer $mailer
+        RecordsMessages $eventRecorder
     )
     {
         $this->doctrine = $doctrine;
-        $this->mailer = $mailer;
+        $this->eventRecorder = $eventRecorder;
     }
 
     /**
@@ -52,13 +54,8 @@ class RegisterWalkinHandler implements MessageHandler
         $em = $this->doctrine->getManager();
         $em->persist($patient);
 
-        if (!$patient->hasArrived()) {
-            $message = \Swift_Message::newInstance(
-                'A new patient is about to arrive',
-                'Indication: ' . $patient->getIndication()
-            );
-            $message->setTo('triage-nurse@derp.nl');
-            $this->mailer->send($message);
-        }
+        // The event "has occurred".
+        $event = new WalkinRegistered($patient->getIndication());
+        $this->eventRecorder->record($event);
     }
 }
