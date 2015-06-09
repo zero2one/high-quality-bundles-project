@@ -1,0 +1,6 @@
+services:
+    register_walkin_handler:
+        class: Derp\Command\RegisterWalkinHandler
+        arguments:
+            - "@doctrine"
+            - "@mailer"

@@ -71,29 +71,7 @@ class PatientController extends Controller
             /* @var $command RegisterWalkin */
             $command = $form->getData();
 
-            $patient = Patient::walkIn(
-                PersonalInformation::fromDetails(
-                    FullName::fromParts($command->firstName, $command->lastName),
-                    BirthDate::fromYearMonthDayFormat(
-                        $command->birthDate->format('Y-m-d')
-                    ),
-                    new Sex($command->sex)
-                ),
-                $command->indication
-            );
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($patient);
-            $em->flush();
-
-            if (!$patient->hasArrived()) {
-                $message = \Swift_Message::newInstance(
-                    'A new patient is about to arrive',
-                    'Indication: ' . $patient->getIndication()
-                );
-                $message->setTo('triage-nurse@derp.nl');
-                $this->get('mailer')->send($message);
-            }
+            $this->get('register_walkin_handler')->handle($command);
 
             return $this->redirect($this->generateUrl('patient_list'));
         }
