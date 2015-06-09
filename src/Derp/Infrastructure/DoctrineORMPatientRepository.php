@@ -23,4 +23,21 @@ class DoctrineORMPatientRepository implements PatientRepository
         $em = $this->doctrine->getManager();
         $em->persist($patient);
     }
+
+
+    /**
+     * Get all patients.
+     *
+     * @return Patient[]
+     */
+    public function all()
+    {
+        $patients = $this
+            ->doctrine
+            ->getManager()
+            ->getRepository(Patient::class)
+            ->findAll();
+
+        return $patients;
+    }
 }

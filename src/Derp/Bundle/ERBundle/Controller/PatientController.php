@@ -26,11 +26,7 @@ class PatientController extends Controller
      */
     public function listAction()
     {
-        $patients = $this
-            ->getDoctrine()
-            ->getManager()
-            ->getRepository(Patient::class)
-            ->findAll();
+        $patients = $this->get('patient_repository')->all();
 
         return array(
             'patients' => $patients
